@@ -9,6 +9,10 @@ import com.moneybill.moneybill.util.mapper.CategoryMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -16,6 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    @Transactional
     @Override
     public CategoryInfoDto createCategory(CategoryCreateDto categoryCreateDto) {
         if (categoryRepository.existsByName(categoryCreateDto.getName())) {
@@ -25,5 +30,14 @@ public class CategoryServiceImpl implements CategoryService {
                 .name(categoryCreateDto.getName())
                 .build();
         return CategoryMapper.toInfoDto(categoryRepository.save(category));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<CategoryInfoDto> getAllCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(CategoryMapper::toInfoDto)
+                .collect(Collectors.toList());
     }
 }

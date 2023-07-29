@@ -1,11 +1,12 @@
 package com.moneybill.moneybill.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "categories")
