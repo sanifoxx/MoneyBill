@@ -6,7 +6,7 @@ import com.moneybill.moneybill.dto.UserUpdateDto;
 
 public interface UserService {
 
-    void createUser(UserCreateDto userCreateDto);
+    UserInfoDto createUser(UserCreateDto userCreateDto);
 
     UserInfoDto getUserById(Long userId);
 

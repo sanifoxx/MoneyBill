@@ -19,9 +19,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public void createUser(@Valid @RequestBody UserCreateDto userCreateDto) {
+    public UserInfoDto createUser(@Valid @RequestBody UserCreateDto userCreateDto) {
         log.info("POST /users | userCreateDto-object: {}", userCreateDto);
-        userService.createUser(userCreateDto);
+        return userService.createUser(userCreateDto);
     }
 
     @GetMapping

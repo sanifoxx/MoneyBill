@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void createUser(final UserCreateDto userCreateDto) {
+    public UserInfoDto createUser(final UserCreateDto userCreateDto) {
         if (userRepository.existsByEmail(userCreateDto.getEmail())) {
             throw new UserAlreadyExistsException("User with email already exists");
         }
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
                 .lastName(userCreateDto.getLastName())
                 .creationTimestamp(LocalDateTime.now())
                 .build();
-        userRepository.save(user);
+        return UserMapper.toInfoDto(userRepository.save(user));
     }
 
     @Transactional(readOnly = true)
