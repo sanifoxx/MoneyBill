@@ -2,6 +2,7 @@ package com.moneybill.moneybill.controller.category;
 
 import com.moneybill.moneybill.dto.category.CategoryCreateDto;
 import com.moneybill.moneybill.dto.category.CategoryInfoDto;
+import com.moneybill.moneybill.dto.category.CategoryUpdateDto;
 import com.moneybill.moneybill.service.category.CategoryService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,5 +35,12 @@ public class CategoryController {
     public CategoryInfoDto getCategory(@PathVariable(name = "categoryId") Long categoryId) {
         log.info("GET /categories/{}", categoryId);
         return categoryService.getCategoryById(categoryId);
+    }
+
+    @PutMapping("/{categoryId}")
+    public CategoryInfoDto updateCategory(@PathVariable(name = "categoryId") Long categoryId,
+                                          @Valid @RequestBody CategoryUpdateDto categoryUpdateDto) {
+        log.info("PUT /categories/{} | categoryUpdateDto-Object: {}", categoryId, categoryUpdateDto);
+        return categoryService.updateCategoryById(categoryId, categoryUpdateDto);
     }
 }
