@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS transfers (
     user_id     BIGINT         NOT NULL REFERENCES users (id),
     amount      NUMERIC(17, 2) NOT NULL,
     is_income   BOOLEAN        NOT NULL,
-    description VARCHAR(128)   NOT NULL,
+    description VARCHAR(128),
     category_id INTEGER        NOT NULL REFERENCES categories (id),
     created_at  TIMESTAMP      NOT NULL
 );

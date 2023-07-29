@@ -52,7 +52,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Transactional(readOnly = true)
-    private Category getCategoryByIdOrElseThrow(Long categoryId) {
+    @Override
+    public Category getCategoryByIdOrElseThrow(Long categoryId) {
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() ->
                         new CategoryNotFoundException("Category not found")

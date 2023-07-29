@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,7 +22,7 @@ public class Transfer {
     private User owner;
 
     @Column(name = "amount", nullable = false)
-    private Float amount;
+    private BigDecimal amount;
 
     @Column(name = "is_income", nullable = false)
     private Boolean isIncome;
