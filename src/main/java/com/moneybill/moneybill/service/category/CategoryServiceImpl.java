@@ -3,6 +3,7 @@ package com.moneybill.moneybill.service.category;
 import com.moneybill.moneybill.dto.category.CategoryCreateDto;
 import com.moneybill.moneybill.dto.category.CategoryInfoDto;
 import com.moneybill.moneybill.exception.already_exists.CategoryAlreadyExistsException;
+import com.moneybill.moneybill.exception.not_found.CategoryNotFoundException;
 import com.moneybill.moneybill.model.Category;
 import com.moneybill.moneybill.repository.category.CategoryRepository;
 import com.moneybill.moneybill.util.mapper.CategoryMapper;
@@ -39,5 +40,20 @@ public class CategoryServiceImpl implements CategoryService {
                 .stream()
                 .map(CategoryMapper::toInfoDto)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public CategoryInfoDto getCategoryById(Long categoryId) {
+        Category category = getCategoryByIdOrElseThrow(categoryId);
+        return CategoryMapper.toInfoDto(category);
+    }
+
+    @Transactional(readOnly = true)
+    private Category getCategoryByIdOrElseThrow(Long categoryId) {
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() ->
+                        new CategoryNotFoundException("Category not found")
+                );
     }
 }

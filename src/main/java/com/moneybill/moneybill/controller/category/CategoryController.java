@@ -29,4 +29,10 @@ public class CategoryController {
         log.info("GET /categories");
         return categoryService.getAllCategories();
     }
+
+    @GetMapping("/{categoryId}")
+    public CategoryInfoDto getCategory(@PathVariable(name = "categoryId") Long categoryId) {
+        log.info("GET /categories/{}", categoryId);
+        return categoryService.getCategoryById(categoryId);
+    }
 }
