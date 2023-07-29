@@ -1,13 +1,11 @@
 package com.moneybill.moneybill.controller.user;
 
 import com.moneybill.moneybill.dto.UserCreateDto;
+import com.moneybill.moneybill.dto.UserInfoDto;
 import com.moneybill.moneybill.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,5 +21,12 @@ public class UserController {
     public void createUser(@Valid @RequestBody UserCreateDto userCreateDto) {
         log.info("POST /users | userCreateDto-object: {}", userCreateDto);
         userService.createUser(userCreateDto);
+    }
+
+    @GetMapping("/{userId}")
+    public UserInfoDto getUser(@PathVariable(name = "userId") Long userId,
+                               @RequestHeader(name = "X-User-Id") Long requestingUserId) {
+        log.info("GET /users/{} | X-User-Id={}", userId, requestingUserId);
+        return userService.getUserById(userId, requestingUserId);
     }
 }
