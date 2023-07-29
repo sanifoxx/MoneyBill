@@ -1,8 +1,8 @@
 package com.moneybill.moneybill.service.user;
 
-import com.moneybill.moneybill.dto.UserCreateDto;
-import com.moneybill.moneybill.dto.UserInfoDto;
-import com.moneybill.moneybill.dto.UserUpdateDto;
+import com.moneybill.moneybill.dto.user.UserCreateDto;
+import com.moneybill.moneybill.dto.user.UserInfoDto;
+import com.moneybill.moneybill.dto.user.UserUpdateDto;
 
 public interface UserService {
 

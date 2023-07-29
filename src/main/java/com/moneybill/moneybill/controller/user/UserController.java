@@ -1,8 +1,8 @@
 package com.moneybill.moneybill.controller.user;
 
-import com.moneybill.moneybill.dto.UserCreateDto;
-import com.moneybill.moneybill.dto.UserInfoDto;
-import com.moneybill.moneybill.dto.UserUpdateDto;
+import com.moneybill.moneybill.dto.user.UserCreateDto;
+import com.moneybill.moneybill.dto.user.UserInfoDto;
+import com.moneybill.moneybill.dto.user.UserUpdateDto;
 import com.moneybill.moneybill.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

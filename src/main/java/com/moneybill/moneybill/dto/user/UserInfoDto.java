@@ -1,4 +1,4 @@
-package com.moneybill.moneybill.dto;
+package com.moneybill.moneybill.dto.user;
 
 import lombok.Builder;
 import lombok.Data;
