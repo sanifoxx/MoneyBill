@@ -44,10 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserInfoDto getUserById(Long userId, Long requestingUserId) {
-        if (!userId.equals(requestingUserId)) {
-            throw new AccessDeniedException("Access denied. Not enough rights");
-        }
+    public UserInfoDto getUserById(Long userId) {
         User user = getUserByIdOrElseThrow(userId);
         return UserMapper.toInfoDto(user);
     }

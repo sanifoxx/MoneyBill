@@ -25,10 +25,9 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserInfoDto getUser(@PathVariable(name = "userId") Long userId,
-                               @RequestHeader(name = "X-User-Id") Long requestingUserId) {
-        log.info("GET /users/{} | X-User-Id={}", userId, requestingUserId);
-        return userService.getUserById(userId, requestingUserId);
+    public UserInfoDto getUser(@RequestHeader(name = "X-User-Id") Long userId) {
+        log.info("GET /users | X-User-Id={}", userId);
+        return userService.getUserById(userId);
     }
 
     @PutMapping

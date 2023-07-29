@@ -8,7 +8,7 @@ public interface UserService {
 
     void createUser(UserCreateDto userCreateDto);
 
-    UserInfoDto getUserById(Long userId, Long requestingUserId);
+    UserInfoDto getUserById(Long userId);
 
     UserInfoDto updateUserById(Long userId, UserUpdateDto userUpdateDto);
 }
