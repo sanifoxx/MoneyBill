@@ -2,7 +2,9 @@ package com.moneybill.moneybill.service.user;
 
 import com.moneybill.moneybill.dto.UserCreateDto;
 import com.moneybill.moneybill.dto.UserInfoDto;
+import com.moneybill.moneybill.dto.UserUpdateDto;
 import com.moneybill.moneybill.exception.access_denied.AccessDeniedException;
+import com.moneybill.moneybill.exception.already_exists.AlreadyExistsException;
 import com.moneybill.moneybill.exception.already_exists.UserAlreadyExistsException;
 import com.moneybill.moneybill.exception.not_found.UserNotFoundException;
 import com.moneybill.moneybill.model.User;
@@ -46,10 +48,39 @@ public class UserServiceImpl implements UserService {
         if (!userId.equals(requestingUserId)) {
             throw new AccessDeniedException("Access denied. Not enough rights");
         }
-        User user = userRepository.findById(userId)
+        User user = getUserByIdOrElseThrow(userId);
+        return UserMapper.toInfoDto(user);
+    }
+
+    private User getUserByIdOrElseThrow(Long userId) {
+        return userRepository.findById(userId)
                 .orElseThrow(() ->
                         new UserNotFoundException("User not found")
                 );
-        return UserMapper.toInfoDto(user);
+    }
+
+    @Transactional
+    @Override
+    public UserInfoDto updateUserById(Long userId, UserUpdateDto userUpdateDto) {
+        User user = getUserByIdOrElseThrow(userId);
+        if (userUpdateDto.getUsername() != null) {
+            if (userRepository.existsByUsernameAndIdNot(userUpdateDto.getUsername(), userId)) {
+                throw new AlreadyExistsException("Username already exists");
+            }
+            user.setUsername(userUpdateDto.getUsername());
+        }
+        if (userUpdateDto.getEmail() != null) {
+            if (userRepository.existsByEmailAndIdNot(userUpdateDto.getEmail(), userId)) {
+                throw new AlreadyExistsException("Email already exists");
+            }
+            user.setEmail(userUpdateDto.getEmail());
+        }
+        if (userUpdateDto.getFirstName() != null) {
+            user.setFirstName(userUpdateDto.getFirstName());
+        }
+        if (userUpdateDto.getLastName() != null) {
+            user.setLastName(userUpdateDto.getLastName());
+        }
+        return UserMapper.toInfoDto(userRepository.save(user));
     }
 }

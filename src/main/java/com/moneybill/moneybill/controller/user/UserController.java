@@ -2,6 +2,7 @@ package com.moneybill.moneybill.controller.user;
 
 import com.moneybill.moneybill.dto.UserCreateDto;
 import com.moneybill.moneybill.dto.UserInfoDto;
+import com.moneybill.moneybill.dto.UserUpdateDto;
 import com.moneybill.moneybill.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,5 +29,12 @@ public class UserController {
                                @RequestHeader(name = "X-User-Id") Long requestingUserId) {
         log.info("GET /users/{} | X-User-Id={}", userId, requestingUserId);
         return userService.getUserById(userId, requestingUserId);
+    }
+
+    @PutMapping
+    public UserInfoDto updateUser(@RequestHeader(name = "X-User-Id") Long userId,
+                                  @Valid @RequestBody UserUpdateDto userUpdateDto) {
+        log.info("PUT /users | X-User-Id={}, userUpdateDto-Object: {}", userId, userUpdateDto);
+        return userService.updateUserById(userId, userUpdateDto);
     }
 }
