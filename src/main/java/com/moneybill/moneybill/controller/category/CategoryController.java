@@ -43,4 +43,10 @@ public class CategoryController {
         log.info("PUT /categories/{} | categoryUpdateDto-Object: {}", categoryId, categoryUpdateDto);
         return categoryService.updateCategoryById(categoryId, categoryUpdateDto);
     }
+
+    @DeleteMapping("/{categoryId}")
+    public CategoryInfoDto deleteCategory(@PathVariable(name = "categoryId") Long categoryId) {
+        log.info("DELETE /categories/{}", categoryId);
+        return categoryService.deleteCategoryById(categoryId);
+    }
 }
