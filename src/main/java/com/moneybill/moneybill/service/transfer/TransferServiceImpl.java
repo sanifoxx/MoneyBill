@@ -2,6 +2,8 @@ package com.moneybill.moneybill.service.transfer;
 
 import com.moneybill.moneybill.dto.transfer.TransferCreateDto;
 import com.moneybill.moneybill.dto.transfer.TransferInfoDto;
+import com.moneybill.moneybill.exception.access_denied.AccessDeniedException;
+import com.moneybill.moneybill.exception.not_found.TransferNotFoundException;
 import com.moneybill.moneybill.model.Category;
 import com.moneybill.moneybill.model.Transfer;
 import com.moneybill.moneybill.model.User;
@@ -53,5 +55,24 @@ public class TransferServiceImpl implements TransferService {
                 .stream()
                 .map(TransferMapper::toInfoDto)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public TransferInfoDto getTransferByIdForUser(Long userId, Long transferId) {
+        Transfer transfer = getTransferByIdOrElseThrow(transferId);
+        if (!userId.equals(transfer.getOwner().getId())) {
+            throw new AccessDeniedException("Insufficient rights to view");
+        }
+        return TransferMapper.toInfoDto(transfer);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Transfer getTransferByIdOrElseThrow(Long transferId) {
+        return transferRepository.findById(transferId)
+                .orElseThrow(() ->
+                        new TransferNotFoundException("Transfer not found")
+                );
     }
 }

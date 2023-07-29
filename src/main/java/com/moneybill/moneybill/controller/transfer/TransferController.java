@@ -30,4 +30,11 @@ public class TransferController {
         log.info("GET /transfers | X-User-Id={}", userId);
         return transferService.getAllTransfersForUser(userId);
     }
+
+    @GetMapping("/{transferId}")
+    public TransferInfoDto getTransfer(@RequestHeader("X-User-Id") Long userId,
+                                       @PathVariable("transferId") Long transferId) {
+        log.info("GET /transfers/{} | X-User-Id={}", transferId, userId);
+        return transferService.getTransferByIdForUser(userId, transferId);
+    }
 }
