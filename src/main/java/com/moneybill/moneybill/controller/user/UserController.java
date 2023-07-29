@@ -36,4 +36,10 @@ public class UserController {
         log.info("PUT /users | X-User-Id={}, userUpdateDto-Object: {}", userId, userUpdateDto);
         return userService.updateUserById(userId, userUpdateDto);
     }
+
+    @DeleteMapping
+    public UserInfoDto deleteUser(@RequestHeader(name = "X-User-Id") Long userId) {
+        log.info("DELETE /users | X-User-Id={}", userId);
+        return userService.deleteUserById(userId);
+    }
 }

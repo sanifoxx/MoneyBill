@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toInfoDto(user);
     }
 
+    @Transactional(readOnly = true)
     private User getUserByIdOrElseThrow(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() ->
@@ -79,5 +80,13 @@ public class UserServiceImpl implements UserService {
             user.setLastName(userUpdateDto.getLastName());
         }
         return UserMapper.toInfoDto(userRepository.save(user));
+    }
+
+    @Transactional
+    @Override
+    public UserInfoDto deleteUserById(Long userId) {
+        User user = getUserByIdOrElseThrow(userId);
+        userRepository.delete(user);
+        return UserMapper.toInfoDto(user);
     }
 }
