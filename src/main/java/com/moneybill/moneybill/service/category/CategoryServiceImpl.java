@@ -75,6 +75,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public CategoryInfoDto deleteCategoryById(Long categoryId) {
-        return null;
+        Category category = getCategoryByIdOrElseThrow(categoryId);
+        categoryRepository.delete(category);
+        return CategoryMapper.toInfoDto(category);
     }
 }
