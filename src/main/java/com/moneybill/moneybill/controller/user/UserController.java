@@ -20,7 +20,7 @@ public class UserController {
 
     @PostMapping
     public UserInfoDto createUser(@Valid @RequestBody UserCreateDto userCreateDto) {
-        log.info("POST /users | userCreateDto-object: {}", userCreateDto);
+        log.info("POST /users | userCreateDto-Object: {}", userCreateDto);
         return userService.createUser(userCreateDto);
     }
 
