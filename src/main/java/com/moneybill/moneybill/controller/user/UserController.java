@@ -24,7 +24,7 @@ public class UserController {
         userService.createUser(userCreateDto);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping
     public UserInfoDto getUser(@RequestHeader(name = "X-User-Id") Long userId) {
         log.info("GET /users | X-User-Id={}", userId);
         return userService.getUserById(userId);
