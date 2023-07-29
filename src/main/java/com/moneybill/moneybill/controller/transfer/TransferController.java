@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -22,5 +23,11 @@ public class TransferController {
                                           @Valid @RequestBody TransferCreateDto transferCreateDto) {
         log.info("POST /transfers | X-User-Id={}, transferCreateDto-Object: {}", userId, transferCreateDto);
         return transferService.createTransferForUser(userId, transferCreateDto);
+    }
+
+    @GetMapping
+    public List<TransferInfoDto> getAllTransfers(@RequestHeader("X-User-Id") Long userId) {
+        log.info("GET /transfers | X-User-Id={}", userId);
+        return transferService.getAllTransfersForUser(userId);
     }
 }
