@@ -50,4 +50,11 @@ public class TransferController {
         );
         return transferService.updateTransferByIdForUser(userId, transferId, transferUpdateDto);
     }
+
+    @DeleteMapping("/{transferId}")
+    public TransferInfoDto deleteTransfer(@RequestHeader("X-User-Id") Long userId,
+                                          @PathVariable("transferId") Long transferId) {
+        log.info("DELETE /transfers/{}, | X-User-Id={}", transferId, userId);
+        return transferService.deleteTransferByIdForUser(userId, transferId);
+    }
 }

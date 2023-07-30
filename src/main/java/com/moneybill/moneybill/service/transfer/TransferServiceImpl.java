@@ -84,7 +84,7 @@ public class TransferServiceImpl implements TransferService {
                                                      TransferUpdateDto transferUpdateDto) {
         Transfer transfer = getTransferByIdOrElseThrow(transferId);
         if (!userId.equals(transfer.getOwner().getId())) {
-            throw new AccessDeniedException("Insufficient rights to view");
+            throw new AccessDeniedException("Insufficient rights to update");
         }
         if (transferUpdateDto.getAmount() != null) {
             transfer.setAmount(transferUpdateDto.getAmount());
@@ -100,5 +100,16 @@ public class TransferServiceImpl implements TransferService {
             transfer.setCategory(category);
         }
         return TransferMapper.toInfoDto(transferRepository.save(transfer));
+    }
+
+    @Transactional
+    @Override
+    public TransferInfoDto deleteTransferByIdForUser(Long userId, Long transferId) {
+        Transfer transfer = getTransferByIdOrElseThrow(transferId);
+        if (!userId.equals(transfer.getOwner().getId())) {
+            throw new AccessDeniedException("Insufficient rights to delete");
+        }
+        transferRepository.delete(transfer);
+        return TransferMapper.toInfoDto(transfer);
     }
 }

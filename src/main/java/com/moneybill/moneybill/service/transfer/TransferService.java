@@ -18,4 +18,6 @@ public interface TransferService {
     Transfer getTransferByIdOrElseThrow(Long transferId);
 
     TransferInfoDto updateTransferByIdForUser(Long userId, Long transferId, TransferUpdateDto transferUpdateDto);
+
+    TransferInfoDto deleteTransferByIdForUser(Long userId, Long transferId);
 }
