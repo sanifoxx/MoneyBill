@@ -2,6 +2,7 @@ package com.moneybill.moneybill.service.transfer;
 
 import com.moneybill.moneybill.dto.transfer.TransferCreateDto;
 import com.moneybill.moneybill.dto.transfer.TransferInfoDto;
+import com.moneybill.moneybill.dto.transfer.TransferUpdateDto;
 import com.moneybill.moneybill.exception.access_denied.AccessDeniedException;
 import com.moneybill.moneybill.exception.not_found.TransferNotFoundException;
 import com.moneybill.moneybill.model.Category;
@@ -74,5 +75,30 @@ public class TransferServiceImpl implements TransferService {
                 .orElseThrow(() ->
                         new TransferNotFoundException("Transfer not found")
                 );
+    }
+
+    @Transactional
+    @Override
+    public TransferInfoDto updateTransferByIdForUser(Long userId,
+                                                     Long transferId,
+                                                     TransferUpdateDto transferUpdateDto) {
+        Transfer transfer = getTransferByIdOrElseThrow(transferId);
+        if (!userId.equals(transfer.getOwner().getId())) {
+            throw new AccessDeniedException("Insufficient rights to view");
+        }
+        if (transferUpdateDto.getAmount() != null) {
+            transfer.setAmount(transferUpdateDto.getAmount());
+        }
+        if (transferUpdateDto.getIsIncome() != null) {
+            transfer.setIsIncome(transferUpdateDto.getIsIncome());
+        }
+        if (transferUpdateDto.getDescription() != null) {
+            transfer.setDescription(transferUpdateDto.getDescription());
+        }
+        if (transferUpdateDto.getCategory() != null && transferUpdateDto.getCategory().getId() != null) {
+            Category category = categoryService.getCategoryByIdOrElseThrow(transferUpdateDto.getCategory().getId());
+            transfer.setCategory(category);
+        }
+        return TransferMapper.toInfoDto(transferRepository.save(transfer));
     }
 }

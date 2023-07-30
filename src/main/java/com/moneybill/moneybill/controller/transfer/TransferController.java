@@ -2,6 +2,7 @@ package com.moneybill.moneybill.controller.transfer;
 
 import com.moneybill.moneybill.dto.transfer.TransferCreateDto;
 import com.moneybill.moneybill.dto.transfer.TransferInfoDto;
+import com.moneybill.moneybill.dto.transfer.TransferUpdateDto;
 import com.moneybill.moneybill.service.transfer.TransferService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,5 +37,17 @@ public class TransferController {
                                        @PathVariable("transferId") Long transferId) {
         log.info("GET /transfers/{} | X-User-Id={}", transferId, userId);
         return transferService.getTransferByIdForUser(userId, transferId);
+    }
+
+    @PutMapping("/{transferId}")
+    public TransferInfoDto updateTransfer(@RequestHeader("X-User-Id") Long userId,
+                                          @PathVariable("transferId") Long transferId,
+                                          @Valid @RequestBody TransferUpdateDto transferUpdateDto) {
+        log.info("PUT /transfers/{} | X-User-Id={}, transferUpdateDto-Object: {}",
+                transferId,
+                userId,
+                transferUpdateDto
+        );
+        return transferService.updateTransferByIdForUser(userId, transferId, transferUpdateDto);
     }
 }
