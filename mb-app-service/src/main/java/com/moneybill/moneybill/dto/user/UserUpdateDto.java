@@ -4,7 +4,6 @@ import com.moneybill.moneybill.annotation.null_or_not_blank.NullOrNotBlank;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data

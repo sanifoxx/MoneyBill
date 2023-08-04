@@ -7,19 +7,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
@@ -37,7 +30,7 @@ public class TestController {
         Collections.list(request.getHeaderNames()).forEach(name -> headers.add(name, request.getHeader(name)));
         System.out.println(headers);
 
-        String body = null;
+        String body;
         try {
             body = request.getReader()
                     .lines()
@@ -56,7 +49,7 @@ public class TestController {
         System.out.println("http://localhost:8081" + request.getRequestURI());
         System.out.println(httpEntity.getBody());
 
-        ResponseEntity<Object> response = null;
+        ResponseEntity<Object> response;
         try {
             response = restTemplate.exchange(
                     "http://localhost:8081" + request.getRequestURI(),
