@@ -1,4 +1,4 @@
-package com.moneybill.moneybill.controller.transfer;
+package com.moneybill.moneybill.controller.api_v1.transfer;
 
 import com.moneybill.moneybill.dto.transfer.TransferCreateDto;
 import com.moneybill.moneybill.dto.transfer.TransferInfoDto;
@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/transfers")
+@RequestMapping("api/v1/transfers")
 public class TransferController {
 
     private final TransferService transferService;

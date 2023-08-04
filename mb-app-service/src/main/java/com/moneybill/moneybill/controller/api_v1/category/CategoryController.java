@@ -1,4 +1,4 @@
-package com.moneybill.moneybill.controller.category;
+package com.moneybill.moneybill.controller.api_v1.category;
 
 import com.moneybill.moneybill.dto.category.CategoryCreateDto;
 import com.moneybill.moneybill.dto.category.CategoryInfoDto;
@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("api/v1/categories")
 public class CategoryController {
 
     private final CategoryService categoryService;

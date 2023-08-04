@@ -1,4 +1,4 @@
-package com.moneybill.moneybill.controller.user;
+package com.moneybill.moneybill.controller.api_v1.user;
 
 import com.moneybill.moneybill.dto.user.UserCreateDto;
 import com.moneybill.moneybill.dto.user.UserInfoDto;
@@ -13,7 +13,7 @@ import javax.validation.Valid;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/v1/users")
 public class UserController {
 
     private final UserService userService;
