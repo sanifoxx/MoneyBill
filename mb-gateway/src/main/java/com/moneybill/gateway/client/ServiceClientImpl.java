@@ -11,14 +11,15 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class NameClientImpl implements NameClient {
+public class ServiceClientImpl implements ServiceClient {
 
     private final RestTemplate restTemplate;
 
-    public NameClientImpl(RestTemplateBuilder restTemplateBuilder) {
+    public ServiceClientImpl(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder
                 .errorHandler(new IgnoreRestTemplateResponseErrorHandler())
                 .build();
@@ -26,46 +27,35 @@ public class NameClientImpl implements NameClient {
 
     @Override
     public ResponseEntity<Object> sendRequest(String serviceUrl, HttpServletRequest request) {
-
-        HttpHeaders headers = new HttpHeaders();
-        Collections.list(request.getHeaderNames()).forEach(name -> headers.add(name, request.getHeader(name)));
-
-        String body;
-        try {
-            body = request.getReader()
-                    .lines()
-                    .collect(Collectors.joining(System.lineSeparator()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        HttpEntity<Object> httpEntity = new HttpEntity<>(body, headers);
-
-        ResponseEntity<Object> response = restTemplate.exchange(
+        return restTemplate.exchange(
                 serviceUrl + request.getRequestURI(),
                 HttpMethod.valueOf(request.getMethod()),
-                httpEntity,
+                new HttpEntity<>(
+                        extractBody(request),
+                        extractHeaders(request)
+                ),
                 Object.class
         );
-
-        return response;
     }
 
     private HttpHeaders extractHeaders(HttpServletRequest request) {
-        HttpHeaders headers = new HttpHeaders();
-        Collections.list(request.getHeaderNames()).forEach(name -> headers.add(name, request.getHeader(name)));
-        return headers;
+        return Collections.list(request.getHeaderNames())
+                .stream()
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        h -> Collections.list(request.getHeaders(h)),
+                        (oldValue, newValue) -> newValue,
+                        HttpHeaders::new
+                ));
     }
 
     private String extractBody(HttpServletRequest request) {
-        String body;
         try {
-            body = request.getReader()
+            return request.getReader()
                     .lines()
                     .collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return body;
     }
 }
