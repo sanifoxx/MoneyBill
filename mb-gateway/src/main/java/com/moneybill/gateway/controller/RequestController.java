@@ -18,7 +18,11 @@ public class RequestController {
 
     @RequestMapping(value = {"/api/v1/**", "/admin/**"})
     public ResponseEntity<Object> handleApiRequest(HttpServletRequest request) {
-        log.info("{} {}", request.getMethod(), request.getRequestURI());
+        log.info("{} {}{}",
+                request.getMethod(),
+                request.getRequestURI(),
+                request.getQueryString() == null ? "" : "?" + request.getQueryString()
+        );
         return requestService.handleApiRequest(request);
     }
 }

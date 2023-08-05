@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,13 +28,14 @@ public class ServiceClientImpl implements ServiceClient {
     @Override
     public ResponseEntity<Object> sendRequest(String serviceUrl, HttpServletRequest request) {
         return restTemplate.exchange(
-                serviceUrl + request.getRequestURI(),
+                serviceUrl + request.getRequestURI() + "?" + extractParams(request),
                 HttpMethod.valueOf(request.getMethod()),
                 new HttpEntity<>(
                         extractBody(request),
                         extractHeaders(request)
                 ),
-                Object.class
+                Object.class,
+                extractParams(request)
         );
     }
 
@@ -57,5 +58,16 @@ public class ServiceClientImpl implements ServiceClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String extractParams(HttpServletRequest request) {
+        String q = request.getQueryString();
+        if (q.isBlank()) {
+            return "";
+        }
+        return Arrays.stream(q.split("&"))
+                .filter(elem -> !elem.isBlank())
+                .filter(elem -> elem.split("=").length == 2)
+                .collect(Collectors.joining("&"));
     }
 }
