@@ -1,0 +1,21 @@
+server:
+  port: 8082
+
+logging:
+  level:
+    com:
+      moneybill:
+        debug
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/money_bill_statistics_db
+    username: kitty
+    password: 123456789
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  sql:
+    init:
+      mode: always
