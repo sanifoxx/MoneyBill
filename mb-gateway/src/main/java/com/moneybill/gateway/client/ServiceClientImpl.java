@@ -1,11 +1,9 @@
 package com.moneybill.gateway.client;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,16 +25,24 @@ public class ServiceClientImpl implements ServiceClient {
 
     @Override
     public ResponseEntity<Object> sendRequest(String serviceUrl, HttpServletRequest request) {
-        return restTemplate.exchange(
-                serviceUrl + request.getRequestURI() + "?" + extractParams(request),
-                HttpMethod.valueOf(request.getMethod()),
-                new HttpEntity<>(
-                        extractBody(request),
-                        extractHeaders(request)
-                ),
-                Object.class,
-                extractParams(request)
-        );
+        try {
+            return restTemplate.exchange(
+                    serviceUrl + request.getRequestURI() + "?" + extractParams(request),
+                    HttpMethod.valueOf(request.getMethod()),
+                    new HttpEntity<>(
+                            extractBody(request),
+                            extractHeaders(request)
+                    ),
+                    Object.class,
+                    extractParams(request)
+            );
+        } catch (ResourceAccessException e) {
+            e.printStackTrace();
+            return new ResponseEntity<Object>(
+                    "Service unavailable",
+                    HttpStatus.SERVICE_UNAVAILABLE
+            );
+        }
     }
 
     private HttpHeaders extractHeaders(HttpServletRequest request) {
@@ -62,7 +68,7 @@ public class ServiceClientImpl implements ServiceClient {
 
     private String extractParams(HttpServletRequest request) {
         String q = request.getQueryString();
-        if (q.isBlank()) {
+        if (q == null) {
             return "";
         }
         return Arrays.stream(q.split("&"))
