@@ -38,7 +38,7 @@ public class ServiceClientImpl implements ServiceClient {
             );
         } catch (ResourceAccessException e) {
             e.printStackTrace();
-            return new ResponseEntity<Object>(
+            return new ResponseEntity<>(
                     "Service unavailable",
                     HttpStatus.SERVICE_UNAVAILABLE
             );
