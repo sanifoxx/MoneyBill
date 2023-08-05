@@ -1,5 +1,9 @@
 package com.moneybill.gateway.controller;
 
+import com.moneybill.gateway.service.RequestService;
+import com.moneybill.gateway.service.RequestServiceImpl;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,13 +19,18 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @RestController
-public class TestController {
+public class RequestController {
+
+    private final RequestService requestService;
 
     private final RestTemplate restTemplate;
 
-    public TestController() {
+    @Autowired
+    public RequestController(RequestService requestService) {
         this.restTemplate = new RestTemplateBuilder().build();
+        this.requestService = requestService;
     }
 
     @RequestMapping("/api/v1/**")
