@@ -10,9 +10,9 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.money-bill.money-bill</groupId>
-    <artifactId>mb-app-service</artifactId>
-    <name>mb-app-service</name>
+    <groupId>com.money-bill.statistics</groupId>
+    <artifactId>mb-statistics-service</artifactId>
+    <name>mb-statistics-service</name>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
