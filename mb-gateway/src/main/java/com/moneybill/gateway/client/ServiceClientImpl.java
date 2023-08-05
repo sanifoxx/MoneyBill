@@ -25,12 +25,17 @@ public class ServiceClientImpl implements ServiceClient {
 
     @Override
     public ResponseEntity<Object> sendRequest(String serviceUrl, HttpServletRequest request) {
+        return sendRequest(serviceUrl, request, extractBody(request));
+    }
+
+    @Override
+    public ResponseEntity<Object> sendRequest(String serviceUrl, HttpServletRequest request, Object body) {
         try {
             return restTemplate.exchange(
                     serviceUrl + request.getRequestURI() + "?" + extractParams(request),
                     HttpMethod.valueOf(request.getMethod()),
                     new HttpEntity<>(
-                            extractBody(request),
+                            body,
                             extractHeaders(request)
                     ),
                     Object.class,

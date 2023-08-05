@@ -7,4 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 public interface ServiceClient {
 
     ResponseEntity<Object> sendRequest(String serviceUrl, HttpServletRequest request);
+
+    ResponseEntity<Object> sendRequest(String serviceUrl, HttpServletRequest request, Object body);
 }
