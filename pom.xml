@@ -23,6 +23,7 @@
 		<module>mb-app-service</module>
 		<module>mb-gateway</module>
 		<module>mb-statistics-service</module>
+		<module>common-dto</module>
 	</modules>
 
     <properties>

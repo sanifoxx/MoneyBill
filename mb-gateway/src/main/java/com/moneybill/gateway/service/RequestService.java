@@ -7,4 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 public interface RequestService {
 
     ResponseEntity<Object> handleApiRequest(HttpServletRequest request);
+
+    ResponseEntity<Object> handleStatisticsRequest(HttpServletRequest request);
 }

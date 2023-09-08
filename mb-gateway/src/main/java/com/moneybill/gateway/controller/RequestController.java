@@ -25,4 +25,14 @@ public class RequestController {
         );
         return requestService.handleApiRequest(request);
     }
+
+    @RequestMapping(value = {"/api/v1/statistics/**", "/admin/statistics/**"})
+    public ResponseEntity<Object> handleStatisticsRequest(HttpServletRequest request) {
+        log.info("{} {}{}",
+                request.getMethod(),
+                request.getRequestURI(),
+                request.getQueryString() == null ? "" : "?" + request.getQueryString()
+        );
+        return requestService.handleStatisticsRequest(request);
+    }
 }
